@@ -1,3 +1,5 @@
+/* global Api, Store, Index, BookmarkMan $ */
+
 const Api = (function() {
 
     const BASE_URL = 'https://thinkful-list-api.herokuapp.com/shanelupton/bookmarks';
