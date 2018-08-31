@@ -7,7 +7,7 @@ body * {
 }
 
 body {
-  background-color: darksalmon;
+  background-color: rgb(38, 102, 165);
 }
 
 .js-controls * {
@@ -21,7 +21,7 @@ body {
   padding: 5px;
   width: 960px;
   height: 100px;
-  background-color: white;
+  background-color: dodgerblue;
   border: 3px solid black;
   border-radius: 15px;
 }
@@ -32,15 +32,15 @@ body {
   position: relative;
   float: right;
   bottom: 50px;
-  background-color: lawngreen;
-  border: 1px solid lawngreen;
+  background-color: #FFF20D;
+  border: 1px solid #FFF20D;
   border-radius: 3px;
   box-shadow: 1px 2px 5px 0px rgba(0,0,0,0.75);
   width: 150px;
   height: 40px;
   font-size: 16px;
   font-weight: 800;
-  color: grey;
+  color: black;
 }
 
 .content {
@@ -50,16 +50,16 @@ body {
   padding: 5px;
   width: 960px;
   height: 500px;
-  background-color: white;
+  background-color: dodgerblue;
   border: 3px solid black;
   border-radius: 15px;
 }
 
-.bm-container * {
+.bookmark * {
   display: inline-block;
 }
 
-.bm-container {
+.bookmark {
   margin: 10px;
   width: 440px;
   height: 150px;
@@ -173,8 +173,8 @@ h2 {
 
 #search-label {
   position: relative;
-  bottom:  30px;
-  right: 25px;
+  bottom:  28px;
+  right: 15px;
 }
 
 #search-input {
@@ -193,15 +193,15 @@ h2 {
 
 #sort-label {
   position: relative;
-  bottom:  30px;
-  right: 25px;
+  bottom:  28px;
+  right: 15px;
 }
 
 #sort-select {
   position: relative;
   bottom: 30px;
   right: 25px;
-  width: 100px;
+  width: 110px;
   height: 30px;
   background-color: lightblue;
   border: 1px solid lawngreen;
