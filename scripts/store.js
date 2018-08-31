@@ -8,7 +8,8 @@ const Store = (function() {
 
     const findAndDelete = function(id) {
         this.items = this.items.filter(item => item.id !== id);
-        Api.deleteBookmark(id);
+        console.log('deleting', id, 'from', this.items);
+
     };
 
     const findAndUpdate = function(id, newData) {
@@ -21,6 +22,12 @@ const Store = (function() {
 
     const setSearchTerm = function(term) {
         this.searchTerm = term;
+        console.log('term', term);
+    };
+
+    const setSort = function(sort) {
+        console.log(sort);
+        this.items = this.items.sort(sort);
     };
 
     return {
@@ -29,5 +36,6 @@ const Store = (function() {
         findAndDelete,
         findAndUpdate,
         setSearchTerm,
+        setSort,
     };
 }());

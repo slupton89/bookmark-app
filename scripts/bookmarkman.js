@@ -2,12 +2,25 @@
 
 const BookmarkMan = (function() {
 
-    //get id
-    function getItemId(bm) {
-        return $(bm).closest('#bookmark').data('bm-id');
+    function render() {
+        let bookmarks = Store.items;
+
+        if(Store.searchTerm) {
+
+            bookmarks = Store.items.filter(bm => bm.title.includes(Store.searchTerm));
+        }
+
+
+        console.log('render ran');
+        const bookmarksItemsString = generateBookmarksItemsString(bookmarks);
+
+        $('.content').html(bookmarksItemsString);
     }
 
-    //handle add
+    function getItemId(bm) {
+        return $(bm).closest('.bookmark').attr('bm-id');
+    }
+
     function handleNewBookmark() {
         $('#js-create-bookmark-form').on('click', '#submit-btn', function(event) {
             event.preventDefault();
@@ -22,36 +35,30 @@ const BookmarkMan = (function() {
             const newBmDesc = $('#js-desc-input').val();
             const newBmRating = $('.dropdown-content').find('.radio:checked').val()
             $('#js-name-input').val('');
-            $('#js-url-input').val('');
+            $('#js-url-input').val('http://');
             $('#js-desc-input').val('');
-            $('#js-name-input').val('');
+            $('#js-desc-input').val('');
 
-            console.log(newBmName, newBmUrl, newBmDesc, newBmRating);
+
 
             Api.createBookmark(newBmName, newBmUrl, newBmDesc, newBmRating, (newBm) => {
                 Store.addBookmark(newBm);
-                console.log(newBmName, newBmUrl, newBmDesc, newBmRating);
-
-                //render();
-            });
-        });
-    }
-
-    //handle del
-    function handleDeleteBookmark() {
-        $('.bookmark').on('click', '#delete-btn', event => {
-            const id = getItemId(event.currentTarget);
-            console.log('deleting', id);
-
-            Api.deleteBookmark(id, (id) => {
-                Store.findAndDelete(id);
                 render();
             });
         });
     }
 
+    function handleDeleteBookmark() {
+        $('.content').on('click', '#js-delete-btn', (function(event) {
+            const id = getItemId(event.currentTarget);
+            Api.deleteBookmark(id, function() {
+                Store.findAndDelete(id);
+                render();
+            });
+        }));
 
-    //handle edit
+    }
+
     function handleEditBookmark() {
         $('js-bookmark-controls').on('submit', '#edit-btn', event => {
             const id = getItemId(event.currentTarget);
@@ -66,74 +73,151 @@ const BookmarkMan = (function() {
         });
     }
 
-    //handle search
-    function search() {
-        $('#search-input').on('keyup', event => {
-            const val = (event.currentTarget);
+    function handleSearch() {
+        $('.search-input').on('keyup', event => {
+            const val = $(event.currentTarget).val();
             Store.setSearchTerm(val);
             render();
         });
     }
 
+    function generateRating(bookmark) {
+        console.log(bookmark.rating);
 
-    function handleCheckbox() {
-        $('#checkbox').on('click', event => {
-            const id = Store.getItemId(event.currentTarget);
-            for (const item of Store.selItems) {
-                if(item.id !== id) {
-                    Store.selItems.push(id);
-                } else {
-                    Store.selItems.slice(item.index, 1);
-                }
-            }
-        });
+        switch (bookmark.rating) {
+            case 1:
+                return `<span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>`;
+                break;
+
+            case 2:
+                return `<span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>`;
+                break;
+
+            case 3:
+                return `<span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>`;
+                break;
+
+            case 4:
+                return `<span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>`;
+                break;
+
+            case 5:
+                return `<span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>`
+                break;
+        }
+
     }
 
     function generateBookmarksElement(bookmark) {
         let bookmarkTitle = `<h3 class="bm-title">${bookmark.title}</h3>`;
 
         return `
-            <div class="bookmark" bm-id="${bookmark.id}">
-                <img src="delete-button.png" id="delete-btn" alt="delete-btn">
-                <img src="img-placeholder.jpg" alt="" class="bm-img">
+            <div class="bookmark" id="js-bookmark" bm-id="${bookmark.id}">
+
                 ${bookmarkTitle}
-                <p class="bm-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
                 <div class="rating-container">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
+                    ${generateRating(bookmark)}
                 </div>
+
+                <p class="bm-description">${bookmark.desc}</p>
+
+                <div class="bm-btns">
+                <form method="get" action="${bookmark.url}"><button class="control-btn" id="add-btn" >Open Link</button></form>
+
+
+                <button class="control-btn" id="js-delete-btn">Delete</button>
+                </div>
+              </div>
+
             </div>
         `
     }
-
+           // <a href=${bookmark.url}><button class="control-btn" id="open-link-btn"></a><br><button class="js-delete-btn" id="delete-btn">
     function generateBookmarksItemsString(bookmarkItems) {
         const bmString = bookmarkItems.map((bm) => generateBookmarksElement(bm));
         return bmString.join('');
     }
 
+    function handleDetailView() {
+        $('.content').on('click', '.bookmark', (function(event) {
+            $(event.currentTarget).toggleClass('active');
+            const desc = $(event.currentTarget).find('.bm-description');
+            const bmBtns = $(event.currentTarget).find('.bm-btns');
 
-    //render
-    function render() {
-        let bookmarks = Store.items;
+            if(desc.css('visibility') === 'hidden') {
+                desc.css('visibility', 'visible');
+                bmBtns.css('visibility', 'visible');
 
-        if(Store.searchTerm) {
-            bookmarks = Store.items.filter(bm => bm.name.includes(Store.searchTerm));
-        }
+            } else {
+                desc.css('visibility', 'hidden');
+                bmBtns.css('visibility', 'hidden');
 
-        const bookmarksItemsString = generateBookmarksItemsString(bookmarks);
+            }
 
-        $('.content').html(bookmarksItemsString);
+        }));
+    }
+
+    function handleSort() {
+        $('.js-controls').on('click', '#sort-select', (function(event) {
+            console.log('clicked');
+            const sortVal= $(event.currentTarget).val();
+            let sortMethod = '';
+            console.log(sortVal);
+
+            switch (sortVal) {
+                case 'az':
+                        sortMethod = undefined;
+                    break;
+                case 'za':
+                    sortMethod = function(a, b){return b[1]-a[1]};
+                    break;
+                case 'newest':
+                    break;
+                case 'oldest':
+                    break;
+                case 'ratingBest':
+                sortMethod = function(a, b){return b.rating-a.rating}
+                break;
+                case 'ratingWorst':
+                sortMethod = function(a, b){return a.rating-b.rating}
+                    break;
+                    //
+
+            }
+            console.log();
+            Store.setSort(sortMethod);
+            render();
+        }));
     }
 
     function bindEventListeners() {
         handleNewBookmark();
         handleDeleteBookmark();
         handleEditBookmark();
-        handleCheckbox();
-
+        handleSearch();
+        handleDetailView();
+        handleSort();
     }
 
     return {

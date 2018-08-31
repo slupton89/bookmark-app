@@ -12,13 +12,10 @@
   <div class="js-controls" id="controls">
       <h1>Bookmark Manager</h1>
       <h2 class="labels" id="search-label">Search</h2>
-      <input type="search" name="search" id="search-input">
+      <input type="search" name="search" class="search-input">
       <h2 class="labels" id="sort-label">Sort by:</h2>
       <select name="sort-select" id="sort-select">
-        <option value="az">A-Z</option>
-        <option value="za">Z-A</option>
-        <option value="newest">Newest</option>
-        <option value="oldest">Oldest</option>
+
         <option value="ratingBest">Highest Rated</option>
         <option value="ratingWorst">Lowest Rated</option>
       </select>
@@ -30,7 +27,7 @@
               <label for="title">Name:</label>
               <input type="text" name="name" id="js-name-input">
               <label for="url">Address:</label>
-              <input type="text" name="url" id="js-url-input">
+              <input type="text" name="url" id="js-url-input" value="http://">
               <label for="desc">Description:</label>
               <input type="text" name="desc" id="js-desc-input">
               <label for="rating">Rating:</label>

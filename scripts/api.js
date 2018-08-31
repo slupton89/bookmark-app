@@ -2,12 +2,13 @@
 
 const Api = (function() {
 
-    const BASE_URL = 'https://thinkful-list-api.herokuapp.com/shanelupton/bookmarks';
+    const BASE_URL = 'https://thinkful-list-api.herokuapp.com/shanelupton/bookmarks/';
 
     const getBookmarks = function(callback) { $.getJSON(BASE_URL, callback); };
 
     const createBookmark = function(title, url, desc, rating, callback) {
         const newBookmark = JSON.stringify({title, url, desc, rating});
+        console.log(newBookmark);
 
         $.ajax({
             url: `${BASE_URL}`,
@@ -20,7 +21,7 @@ const Api = (function() {
 
     const deleteBookmark = function(id, callback) {
         $.ajax({
-            url: BASE_URL + `/${id}`,
+            url: BASE_URL + id,
             method: 'DELETE',
             success: callback,
         });
