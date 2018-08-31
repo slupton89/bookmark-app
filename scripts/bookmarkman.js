@@ -89,12 +89,12 @@ const BookmarkMan = (function() {
         });
     }
 
-    function generateBookmarksItemsString(bookmark) {
+    function generateBookmarksElement(bookmark) {
         let bookmarkTitle = `<h3 class="bm-title">${bookmark.title}</h3>`;
 
         return `
-            <div class="bookmark" bm-id="${bookmark.id}>
-                <img src="delete-button.png" id="delete-btn" alt="delete-btn">;
+            <div class="bookmark" bm-id="${bookmark.id}">
+                <img src="delete-button.png" id="delete-btn" alt="delete-btn">
                 <img src="img-placeholder.jpg" alt="" class="bm-img">
                 ${bookmarkTitle}
                 <p class="bm-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -106,7 +106,26 @@ const BookmarkMan = (function() {
                     <span class="fa fa-star"></span>
                 </div>
             </div>
-        `;
+        `
+    }
+
+    function generateBookmarksItemsString(bookmarkItems) {
+        const bmString = bookmarkItems.map((bm) => generateBookmarksElement(bm));
+        return bmString.join('');
+    }
+
+
+    //render
+    function render() {
+        let bookmarks = Store.items;
+
+        if(Store.searchTerm) {
+            bookmarks = Store.items.filter(bm => bm.name.includes(Store.searchTerm));
+        }
+
+        const bookmarksItemsString = generateBookmarksItemsString(bookmarks);
+
+        $('.content').html(bookmarksItemsString);
     }
 
     function bindEventListeners() {
@@ -114,20 +133,7 @@ const BookmarkMan = (function() {
         handleDeleteBookmark();
         handleEditBookmark();
         handleCheckbox();
-    }
 
-
-    //render
-    function render() {
-        let items = Store.items;
-
-        if(Store.searchTerm) {
-            items = Store.items.filter(item => items.name.includes(Store.searchTerm));
-        }
-
-        const bookmarksItemsString = generateBookmarksItemsString;
-
-        $('content').html(bookmarksItemsString);
     }
 
     return {

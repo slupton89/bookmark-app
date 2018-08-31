@@ -25,10 +25,9 @@ const Store = (function() {
 
     return {
         items: [],
-        selItems: [],
-        addBookmark,
+        addBookmark: addBookmark,
         findAndDelete,
         findAndUpdate,
         setSearchTerm,
     };
-});
+}());

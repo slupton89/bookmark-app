@@ -61,7 +61,10 @@ body {
 }
 
 .bookmark {
-  margin: 10px;
+  position: relative;
+  left: 0px;
+  top: 0px;
+  margin: 20px;
   width: 440px;
   height: 150px;
   background-color: dodgerblue;
@@ -72,7 +75,7 @@ body {
 
 .bm-title {
   position: relative;
-  right: 23px;
+  right: 5px;
   margin-top: 8px;
   margin-bottom: 0px;
   font-size: 24px;
@@ -90,6 +93,12 @@ body {
   border: 0.5px solid black;
   border-radius: 5px;
   background-color: gainsboro;
+}
+
+#add-btn {
+  position: relative;
+  left: 40px;
+  bottom: 60px;
 }
 
 #delete-btn {
@@ -181,13 +190,13 @@ h2 {
 
 #search-label {
   position: relative;
-  bottom:  28px;
+  bottom:  58px;
   right: 15px;
 }
 
 #search-input {
   position: relative;
-  bottom: 30px;
+  bottom: 60px;
   right: 25px;
   width: 300px;
   height: 30px;
@@ -201,13 +210,13 @@ h2 {
 
 #sort-label {
   position: relative;
-  bottom:  28px;
+  bottom:  58px;
   right: 15px;
 }
 
 #sort-select {
   position: relative;
-  bottom: 30px;
+  bottom: 60px;
   right: 25px;
   width: 110px;
   height: 30px;
@@ -225,6 +234,8 @@ h2 {
 .dropdown-content {
   display: none;
   position: absolute;
+  left: 18px;
+  top: -13px;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
