@@ -1,12 +1,14 @@
-/* global Api, Store, Index, BookmarkMan $ cuid */
+/* global cuid */
 
-const Bookmark = (function() {
+const Bookmark = (function () {
 
-    const validateData = function(title, url) {
-        if(!title || !url) { throw new Error('Missing required info');}
+    const validateData = function (title, url) {
+        if (!title || !url) {
+            throw new Error('Missing required info');
+        }
     };
 
-    const create = function(title, url, desc, rating) {
+    const create = function (title, url, desc, rating) {
         return {
             id: cuid(),
             title,
@@ -20,4 +22,4 @@ const Bookmark = (function() {
         validateData,
         create,
     };
-});
+}());
