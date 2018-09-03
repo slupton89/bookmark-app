@@ -1,14 +1,20 @@
-/* global Api, Store, Index, BookmarkMan $ */
+/* global $ */
 
-const Api = (function() {
+const Api = (function () {
 
     const BASE_URL = 'https://thinkful-list-api.herokuapp.com/shanelupton/bookmarks/';
 
-    const getBookmarks = function(callback) { $.getJSON(BASE_URL, callback); };
+    const getBookmarks = function (callback) {
+        $.getJSON(BASE_URL, callback);
+    };
 
-    const createBookmark = function(title, url, desc, rating, callback) {
-        const newBookmark = JSON.stringify({title, url, desc, rating});
-        console.log(newBookmark);
+    const createBookmark = function (title, url, desc, rating, callback) {
+        const newBookmark = JSON.stringify({
+            title,
+            url,
+            desc,
+            rating
+        });
 
         $.ajax({
             url: `${BASE_URL}`,
@@ -19,7 +25,7 @@ const Api = (function() {
         });
     };
 
-    const deleteBookmark = function(id, callback) {
+    const deleteBookmark = function (id, callback) {
         $.ajax({
             url: BASE_URL + id,
             method: 'DELETE',
@@ -32,4 +38,4 @@ const Api = (function() {
         createBookmark,
         deleteBookmark,
     };
-})();
+}());

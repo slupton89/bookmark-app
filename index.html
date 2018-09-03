@@ -24,12 +24,12 @@
           <button class="control-btn" id="add-btn">Add Bookmark</button>
           <div class="dropdown-content">
             <form id="js-create-bookmark-form">
-              <label for="title">Name:</label>
-              <input type="text" name="name" id="js-name-input">
-              <label for="url">Address:</label>
-              <input type="text" name="url" id="js-url-input" value="http://">
+              <label for="title">*Name:</label>
+              <input type="text" name="name" id="js-name-input" class="form-input" required>
+              <label for="url">*Address:</label>
+              <input type="text" name="url" id="js-url-input" class="form-input" value="http://" required>
               <label for="desc">Description:</label>
-              <input type="text" name="desc" id="js-desc-input">
+              <input type="text" name="desc" id="js-desc-input" class="form-input">
               <label for="rating">Rating:</label>
               <input type="radio" name="rating" value="1" id="rating-input-1" class="radio">
               <input type="radio" name="rating" value="2" id="rating-input-2" class="radio">

@@ -1,17 +1,15 @@
-/* global Api, Store, Index, BookmarkMan $ */
+/* global Api, Store, $ */
 
-const BookmarkMan = (function() {
+const BookmarkMan = (function () {
 
     function render() {
         let bookmarks = Store.items;
 
-        if(Store.searchTerm) {
+        if (Store.searchTerm) {
 
             bookmarks = Store.items.filter(bm => bm.title.includes(Store.searchTerm));
         }
 
-
-        console.log('render ran');
         const bookmarksItemsString = generateBookmarksItemsString(bookmarks);
 
         $('.content').html(bookmarksItemsString);
@@ -22,7 +20,7 @@ const BookmarkMan = (function() {
     }
 
     function handleNewBookmark() {
-        $('#js-create-bookmark-form').on('click', '#submit-btn', function(event) {
+        $('#js-create-bookmark-form').on('click', '#submit-btn', function (event) {
             event.preventDefault();
 
             // const newBmName = 'Test Name';
@@ -33,7 +31,7 @@ const BookmarkMan = (function() {
             const newBmName = $('#js-name-input').val();
             const newBmUrl = $('#js-url-input').val();
             const newBmDesc = $('#js-desc-input').val();
-            const newBmRating = $('.dropdown-content').find('.radio:checked').val()
+            const newBmRating = $('.dropdown-content').find('.radio:checked').val();
             $('#js-name-input').val('');
             $('#js-url-input').val('http://');
             $('#js-desc-input').val('');
@@ -49,9 +47,9 @@ const BookmarkMan = (function() {
     }
 
     function handleDeleteBookmark() {
-        $('.content').on('click', '#js-delete-btn', (function(event) {
+        $('.content').on('click', '#js-delete-btn', (function (event) {
             const id = getItemId(event.currentTarget);
-            Api.deleteBookmark(id, function() {
+            Api.deleteBookmark(id, function () {
                 Store.findAndDelete(id);
                 render();
             });
@@ -82,50 +80,43 @@ const BookmarkMan = (function() {
     }
 
     function generateRating(bookmark) {
-        console.log(bookmark.rating);
 
         switch (bookmark.rating) {
-            case 1:
-                return `<span class="fa fa-star checked"></span>
+        case 1:
+            return `<span class="fa fa-star checked"></span>
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>`;
-                break;
 
-            case 2:
-                return `<span class="fa fa-star checked"></span>
+        case 2:
+            return `<span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>`;
-                break;
 
-            case 3:
-                return `<span class="fa fa-star checked"></span>
+        case 3:
+            return `<span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>`;
-                break;
 
-            case 4:
-                return `<span class="fa fa-star checked"></span>
+        case 4:
+            return `<span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star"></span>`;
-                break;
 
-            case 5:
-                return `<span class="fa fa-star checked"></span>
+        case 5:
+            return `<span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>`
-                break;
+                <span class="fa fa-star checked"></span>`;
         }
-
     }
 
     function generateBookmarksElement(bookmark) {
@@ -140,32 +131,30 @@ const BookmarkMan = (function() {
                     ${generateRating(bookmark)}
                 </div>
 
-                <p class="bm-description">${bookmark.desc}</p>
+                <div class="desc-container"><p class="bm-description">${bookmark.desc}</p></div>
 
                 <div class="bm-btns">
-                <form method="get" action="${bookmark.url}"><button class="control-btn" id="add-btn" >Open Link</button></form>
-
-
+                <form method="get" action="${bookmark.url}"><button class="control-btn" id="open-link-btn" >Open Link</button></form>
                 <button class="control-btn" id="js-delete-btn">Delete</button>
                 </div>
               </div>
 
             </div>
-        `
+        `;
     }
-           // <a href=${bookmark.url}><button class="control-btn" id="open-link-btn"></a><br><button class="js-delete-btn" id="delete-btn">
+
     function generateBookmarksItemsString(bookmarkItems) {
         const bmString = bookmarkItems.map((bm) => generateBookmarksElement(bm));
         return bmString.join('');
     }
 
     function handleDetailView() {
-        $('.content').on('click', '.bookmark', (function(event) {
+        $('.content').on('click', '.bookmark', (function (event) {
             $(event.currentTarget).toggleClass('active');
             const desc = $(event.currentTarget).find('.bm-description');
             const bmBtns = $(event.currentTarget).find('.bm-btns');
 
-            if(desc.css('visibility') === 'hidden') {
+            if (desc.css('visibility') === 'hidden') {
                 desc.css('visibility', 'visible');
                 bmBtns.css('visibility', 'visible');
 
@@ -179,33 +168,37 @@ const BookmarkMan = (function() {
     }
 
     function handleSort() {
-        $('.js-controls').on('click', '#sort-select', (function(event) {
-            console.log('clicked');
-            const sortVal= $(event.currentTarget).val();
+        $('.js-controls').on('click', '#sort-select', (function (event) {
+            const sortVal = $(event.currentTarget).val();
             let sortMethod = '';
-            console.log(sortVal);
 
             switch (sortVal) {
-                case 'az':
-                        sortMethod = undefined;
-                    break;
-                case 'za':
-                    sortMethod = function(a, b){return b[1]-a[1]};
-                    break;
-                case 'newest':
-                    break;
-                case 'oldest':
-                    break;
-                case 'ratingBest':
-                sortMethod = function(a, b){return b.rating-a.rating}
+            case 'az':
+                sortMethod = undefined;
                 break;
-                case 'ratingWorst':
-                sortMethod = function(a, b){return a.rating-b.rating}
-                    break;
+            case 'za':
+                sortMethod = function (a, b) {
+                    return b[1] - a[1];
+                };
+                break;
+            case 'newest':
+                break;
+            case 'oldest':
+                break;
+            case 'ratingBest':
+                sortMethod = function (a, b) {
+                    return b.rating - a.rating;
+                };
+                break;
+            case 'ratingWorst':
+                sortMethod = function (a, b) {
+                    return a.rating - b.rating;
+                };
+                break;
                     //
 
             }
-            console.log();
+
             Store.setSort(sortMethod);
             render();
         }));
