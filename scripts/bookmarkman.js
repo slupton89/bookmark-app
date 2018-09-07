@@ -45,7 +45,7 @@ const BookmarkMan = (function () {
             // });
 
             Api.createBookmark(newBmName, newBmUrl, newBmDesc, newBmRating)
-                .then(newBm => {
+                .then(response => {
                     Store.addBookmark(newBm);
                     render();
                 });
