@@ -39,20 +39,27 @@ const BookmarkMan = (function () {
 
 
 
-            Api.createBookmark(newBmName, newBmUrl, newBmDesc, newBmRating, (newBm) => {
-                Store.addBookmark(newBm);
-                render();
-            });
+            // Api.createBookmark(newBmName, newBmUrl, newBmDesc, newBmRating, (newBm) => {
+            //     Store.addBookmark(newBm);
+            //     render();
+            // });
+
+            Api.createBookmark(newBmName, newBmUrl, newBmDesc, newBmRating)
+                .then(newBm => {
+                    Store.addBookmark(newBm);
+                    render();
+                });
         });
     }
 
     function handleDeleteBookmark() {
         $('.content').on('click', '#js-delete-btn', (function (event) {
             const id = getItemId(event.currentTarget);
-            Api.deleteBookmark(id, function () {
-                Store.findAndDelete(id);
-                render();
-            });
+            Api.deleteBookmark(id)
+                .then(response => {
+                        Store.findAndDelete(id);
+                        render();
+                });
         }));
 
     }
